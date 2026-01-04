@@ -1,0 +1,69 @@
+:root {
+  background: #181820;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: nowrap;
+  font-size: 2vh;
+}
+
+.terminal {
+  padding: 1rem;
+}
+
+.prompt {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.user {
+  color: #6996e6
+}
+
+.pwd {
+  color: #f56
+}
+
+.cmd {
+  color: #c2c2dccc;
+  font-style: italic;
+}
+
+.output {
+  padding: 1rem;
+  white-space: pre;
+}
+
+.list {
+  padding: 1rem;
+}
+
+.pressable {
+  color: #f67;
+  text-decoration: underline;
+}
+
+.pressable:hover {
+  cursor: pointer;
+  text-shadow: 0 0 0.5rem;
+}
+
+.list-title {
+  font-size: 1.1rem;
+  padding: 6px;
+  color: #f67;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.cursor {
+  background: #fff;
+  animation: blink 0.5s step-start 0s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.0;
+  }
+}
