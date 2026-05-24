@@ -6,4 +6,7 @@
 
 ##
 
-main branch is hosted on **<a href="https://amr-engineer.github.io/website/" target="_blank">github pages</a>**
+main branch is hosted on
+**<a href="https://amr-engineer.github.io/website/" target="_blank">github pages</a>**
+and
+**<a href="https://amr-engineer.pages.dev/" target="_blank">cloudflare pages</a>**
