@@ -1,6 +1,6 @@
 <div align="center">
     <p><a target="_blank" href="https://amr.engineer">amr.engineer</a></p>
-    <a target="_blank" href="https://status.tartarus.studio"><img alt="Uptime Badge" src="https://uptime.betterstack.com/status-badges/v2/monitor/2nf4z.svg"></a>
+    <a target="_blank" href="https://status.sarmad.studio"><img alt="Uptime Badge" src="https://uptime.betterstack.com/status-badges/v2/monitor/2nf4z.svg"></a>
 </div>
 
 ##
