@@ -29,7 +29,7 @@ const cmds = [
     "A selection of my latest projects. Each represents a unique\nchallenge and development experience. Explore and enjoy!",
     [
       ["Sarmad-Studio", "Indie game studio and publisher", "https://sarmad.studio/"],
-      ["amr.engineer", "Terminal-style portfolio website", "https://github.com/amr-engineer/website"],
+      ["Amr's Website", "Terminal-style portfolio website", "https://github.com/amr-engineer/website"],
       ["mini-polkit", "mini agent for polkit authentication", "https://amr.sarmad.studio/mini-polkit/"],
       ["clipdmenu", "Clipboard menu and copy monitor for X11", "https://amr.engineer/clipdmenu/"],
     ]
