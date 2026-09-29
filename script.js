@@ -137,7 +137,7 @@ async function run(cmd) {
 (async () => {
   const a = new Animator(get(".help .output"))
 
-  await (new Animator(get(".help .cmd"))).printChar("amr.engineer --help")
+  await (new Animator(get(".help .cmd"))).printChar("cat AMR.md")
   await a.print(HLP)
   a.reset()
 
