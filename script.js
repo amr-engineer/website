@@ -31,7 +31,7 @@ const cmds = [
       ["Sarmad-Studio", "Indie game studio and publisher", "https://sarmad.studio/"],
       ["Amr's Website", "Terminal-style portfolio website", "https://github.com/amr-engineer/website"],
       ["mini-polkit", "mini agent for polkit authentication", "https://amr.sarmad.studio/mini-polkit/"],
-      ["clipdmenu", "Clipboard menu and copy monitor for X11", "https://amr.engineer/clipdmenu/"],
+      ["clipdmenu", "Clipboard menu and copy monitor for X11", "https://amr.sarmad.studio/clipdmenu/"],
     ]
   ], [
     "contact",
