@@ -1,0 +1,35 @@
+name: Build CV
+
+on:
+  push:
+    paths:
+      - cv/amr-cv.typ
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: typst-community/setup-typst@v4
+
+      - name: Install Font Awesome
+        run: |
+          curl -sL https://github.com/FortAwesome/Font-Awesome/releases/download/6.7.2/fontawesome-free-6.7.2-desktop.zip -o fa.zip
+          unzip -q fa.zip -d fa
+          mkdir -p fonts && cp fa/*/otfs/*.otf fonts/
+
+      - name: Compile
+        run: typst compile --font-path fonts cv/amr-cv.typ cv/amr-cv.pdf
+
+      - name: Commit PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add amr-cv.pdf
+          git diff --staged --quiet || git commit -m "chore(cv): rebuild amr-cv.pdf [skip ci]"
+          git push
