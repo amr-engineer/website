@@ -3,17 +3,786 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=https://drive.google.com/file/d/1be98adQEBkvHpbM9Fo-6aVeopanf-l6R/view?usp=drivesdk">
-  <title>Redirecting...</title>
-  <script type="text/javascript">
-    window.location.href = "https://drive.google.com/file/d/1be98adQEBkvHpbM9Fo-6aVeopanf-l6R/view?usp=drivesdk";
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Amr AKA Spirit is a game developer who loves hardcore survival games :)">
+  <meta name="keywords" content="Amr, cyber-amr, spirit, developer, engineer">
+  <meta property="og:image" content="https://amr-arkani.pages.dev/social-image.webp">
+  <title>Amr Al-Arkani | Software Developer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@700;900&display=swap"
+    rel="stylesheet">
+
+  <link rel="icon" type="image/x-icon" href="/icon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
   </script>
+
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #e4e4e7;
+      --muted: #a1a1aa;
+      --primary: linear-gradient(135deg, #6333cc, #393393);
+      --radius: 8px;
+      --selection: rgba(99, 51, 204, 0.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(16, 18, 26, 0.85);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      flex-shrink: 0;
+      z-index: 10;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .logo .highlight {
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .toolbar-center {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 8px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 15px rgba(60, 20, 220, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary);
+      border: none;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(60, 20, 220, 0.6);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      filter: brightness(0.98);
+      box-shadow: 0 4px 15px rgba(60, 20, 220, 0.5);
+    }
+
+    .btn-icon {
+      padding: 8px;
+      width: 36px;
+      height: 36px;
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .page-info {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--muted);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .viewer-container {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 32px 24px;
+      background: var(--bg);
+      position: relative;
+      min-height: 0;
+    }
+
+    .viewer-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 0%, rgba(99, 51, 204, 0.1), transparent 70%);
+      z-index: 0;
+    }
+
+    .canvas-wrapper {
+      position: relative;
+      display: inline-block;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      background: white;
+      z-index: 1;
+      flex: 0 0 auto;
+      margin: 0 auto;
+      --scale-factor: 1;
+    }
+
+    #pdf-canvas {
+      display: block;
+      border-radius: 4px;
+    }
+
+    .text-layer {
+      position: absolute;
+      text-align: initial;
+      inset: 0;
+      overflow: hidden;
+      line-height: 1;
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+      transform-origin: 0 0;
+      z-index: 2;
+      pointer-events: auto;
+      cursor: text;
+    }
+
+    .text-layer :is(span, br) {
+      color: transparent;
+      position: absolute;
+      white-space: pre;
+      cursor: text;
+      transform-origin: 0% 0%;
+    }
+
+    .text-layer span.markedContent {
+      top: 0;
+      height: 0;
+      user-select: none;
+    }
+
+    .text-layer .endOfContent {
+      display: block;
+      position: absolute;
+      inset: 100% 0 0;
+      z-index: -1;
+      cursor: default;
+      user-select: none;
+    }
+
+    .text-layer.selecting .endOfContent {
+      top: 0;
+    }
+
+    .text-layer ::selection {
+      background: var(--selection);
+    }
+
+    .text-layer :is(span, br)::selection {
+      background: var(--selection);
+    }
+
+    .link-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .link-layer>* {
+      position: absolute;
+      display: block;
+      pointer-events: auto;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .link-layer>*:hover {
+      background: rgba(99, 51, 204, 0.18);
+      box-shadow: 0 0 0 1px rgba(99, 51, 204, 0.45);
+    }
+
+    body.debug .link-layer>* {
+      background: rgba(255, 0, 100, 0.2) !important;
+      box-shadow: 0 0 0 1px rgba(255, 0, 100, 0.9) !important;
+    }
+
+    /* Synthesized (from-text) hotspots get a subtly different hue */
+    body.debug .link-layer>*.synthetic {
+      background: rgba(0, 200, 255, 0.2) !important;
+      box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.9) !important;
+    }
+
+    .copy-toast {
+      position: fixed;
+      top: calc(var(--toolbar-h, 60px) + 32px);
+      left: 50%;
+      transform: translate(-50%, -16px);
+      padding: 12px 20px;
+      background: rgba(16, 18, 26, 0.95);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font: 500 14px 'Inter', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(99, 51, 204, 0.35);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 999;
+      max-width: calc(100vw - 32px);
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .copy-toast svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      fill: #63d17a;
+    }
+
+    .copy-toast svg.warn {
+      fill: #f5c451;
+    }
+
+    .copy-toast svg.info {
+      fill: #7a9cff;
+    }
+
+    .copy-toast code {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 13px;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 60vw;
+    }
+
+    @media (max-width: 768px) {
+      .toolbar {
+        padding: 10px 16px;
+        justify-content: center;
+      }
+
+      .logo {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+
+      .toolbar-center {
+        order: 2;
+      }
+
+      .toolbar-actions {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 8px;
+      }
+
+      .viewer-container {
+        padding: 16px 12px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <p>If you are not redirected, follow this
-    <a href="https://drive.google.com/file/d/1be98adQEBkvHpbM9Fo-6aVeopanf-l6R/view?usp=drivesdk">Link to CV file</a>.
-  </p>
+
+  <header class="toolbar">
+    <div class="logo"><span class="highlight">Amr Al-Arkani</span> | Software Developer</div>
+
+    <div class="toolbar-center">
+      <button class="btn btn-icon" id="prev-page" title="Previous Page">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        </svg>
+      </button>
+      <span class="page-info" id="page-info">1 / –</span>
+      <button class="btn btn-icon" id="next-page" title="Next Page">
+        <svg viewBox="0 0 24 24">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+        </svg>
+      </button>
+      <div style="width:1px;height:20px;background:var(--border);margin:0 4px;"></div>
+      <button class="btn btn-icon" id="zoom-out" title="Zoom Out">
+        <svg viewBox="0 0 24 24">
+          <path d="M19 13H5v-2h14v2z" />
+        </svg>
+      </button>
+      <button class="btn btn-icon" id="zoom-in" title="Zoom In">
+        <svg viewBox="0 0 24 24">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="toolbar-actions">
+      <a class="btn" href="./amr-cv.pdf" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24">
+          <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+          <path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7z" />
+        </svg>
+        Open
+      </a>
+      <button class="btn btn-primary" id="download-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z" />
+        </svg>
+        Download
+      </button>
+    </div>
+  </header>
+
+  <main class="viewer-container" id="viewer-container">
+    <div class="canvas-wrapper" id="canvas-wrapper">
+      <canvas id="pdf-canvas"></canvas>
+      <div class="text-layer" id="text-layer"></div>
+      <div class="link-layer" id="link-layer"></div>
+    </div>
+  </main>
+
+  <div class="copy-toast" id="copy-toast">
+    <svg id="toast-icon" viewBox="0 0 24 24">
+      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+    </svg>
+    <span id="toast-message">Copied&nbsp;</span><code id="copy-toast-text"></code>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const PDF_URL = './amr-cv.pdf';
+      const DEBUG = new URLSearchParams(location.search).has('debug');
+      if (DEBUG) document.body.classList.add('debug');
+
+      const canvas = document.getElementById('pdf-canvas');
+      const ctx = canvas.getContext('2d');
+      const pageInfo = document.getElementById('page-info');
+      const container = document.getElementById('viewer-container');
+      const canvasWrap = document.getElementById('canvas-wrapper');
+      const textLayerEl = document.getElementById('text-layer');
+      const linkLayer = document.getElementById('link-layer');
+      const downloadBtn = document.getElementById('download-btn');
+      const toast = document.getElementById('copy-toast');
+      const toastMsg = document.getElementById('toast-message');
+      const toastText = document.getElementById('copy-toast-text');
+      const toastIcon = document.getElementById('toast-icon');
+
+      let pdfDoc = null;
+      let pageNum = 1;
+      let pageRendering = false;
+      let pageNumPending = null;
+      let scale = 1.4;
+      let toastTimer = null;
+
+      if (!window.pdfjsLib) { console.error('PDF.js failed to load.'); return; }
+
+      /* ── Clipboard ── */
+      async function copyToClipboard(text) {
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+          }
+        } catch (err) { console.warn('navigator.clipboard failed:', err); }
+
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          ta.style.top = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          const ok = document.execCommand('copy');
+          ta.remove();
+          return ok;
+        } catch (err) {
+          console.error('execCommand copy failed:', err);
+          return false;
+        }
+      }
+
+      function showToast(message, text = '', kind = 'success') {
+        toastMsg.textContent = message;
+        toastText.textContent = text;
+        toastIcon.classList.toggle('warn', kind === 'warn');
+        toastIcon.classList.toggle('info', kind === 'info');
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+      }
+
+      /* ── Classify annotations ── */
+      function classifyAnnotation(annot) {
+        const raw = (annot.url || annot.unsafeUrl || '').trim();
+        if (!raw) return { type: annot.dest ? 'dest' : 'none', raw };
+
+        const lower = raw.toLowerCase();
+
+        if (lower.startsWith('mailto:')) {
+          const email = decodeURIComponent(raw.slice(7).split('?')[0].trim());
+          return { type: 'email', value: email, raw };
+        }
+        if (!lower.includes('://') && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
+          return { type: 'email', value: raw, raw };
+        }
+        if (lower.startsWith('tel:')) {
+          return { type: 'tel', value: raw.slice(4), raw };
+        }
+        return { type: 'url', value: raw, raw };
+      }
+
+      /* ══════════════════════════════════════════════════
+         NEW: Scan the text layer for email addresses
+         and create copy-to-clipboard hotspots over them.
+         This runs AFTER the text layer is built so the
+         positions are already correct.
+      ══════════════════════════════════════════════════ */
+      function addSyntheticEmailHotspots() {
+        const EMAIL_RE = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
+        const wrapRect = canvasWrap.getBoundingClientRect();
+        const seen = new Set();
+
+        const walker = document.createTreeWalker(
+          textLayerEl,
+          NodeFilter.SHOW_TEXT,
+          null
+        );
+
+        let node;
+        while ((node = walker.nextNode())) {
+          const txt = node.nodeValue;
+          if (!txt || txt.indexOf('@') === -1) continue;
+
+          EMAIL_RE.lastIndex = 0;
+          let m;
+          while ((m = EMAIL_RE.exec(txt)) !== null) {
+            const email = m[0];
+            if (seen.has(email)) continue;
+            seen.add(email);
+
+            try {
+              const range = document.createRange();
+              range.setStart(node, m.index);
+              range.setEnd(node, m.index + email.length);
+
+              const rects = range.getClientRects();
+              if (!rects.length) continue;
+
+              for (const r of rects) {
+                if (r.width < 1 || r.height < 1) continue;
+
+                const left = r.left - wrapRect.left;
+                const top = r.top - wrapRect.top;
+
+                const hit = document.createElement('a');
+                hit.className = 'synthetic';
+                hit.style.left = `${left}px`;
+                hit.style.top = `${top}px`;
+                hit.style.width = `${r.width}px`;
+                hit.style.height = `${r.height}px`;
+                hit.href = '#';
+                hit.title = `Click to copy ${email}`;
+
+                hit.addEventListener('click', async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Synthetic email hotspot clicked:', email);
+                  const ok = await copyToClipboard(email);
+                  if (ok) showToast('Copied ', email, 'success');
+                  else showToast('Copy blocked — ', email, 'warn');
+                });
+
+                linkLayer.appendChild(hit);
+              }
+            } catch (err) {
+              console.warn('Synthetic hotspot failed for', email, err);
+            }
+          }
+        }
+      }
+
+      /* ── Load PDF ── */
+      pdfjsLib.getDocument({
+        url: PDF_URL,
+        cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+        cMapPacked: true,
+        standardFontDataUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/standard_fonts/',
+      }).promise
+        .then((doc) => {
+          pdfDoc = doc;
+          pageInfo.textContent = `1 / ${pdfDoc.numPages}`;
+          renderPage(pageNum);
+        })
+        .catch((err) => {
+          console.error('Error loading PDF:', err);
+          container.innerHTML = `<p style="color: var(--muted); text-align:center; margin-top:20px;">
+            Failed to load the PDF. Please try downloading it instead.
+          </p>`;
+        });
+
+      /* ── Render page ── */
+      async function renderPage(num) {
+        pageRendering = true;
+
+        const page = await pdfDoc.getPage(num);
+        const viewport = page.getViewport({ scale });
+
+        const w = viewport.width;
+        const h = viewport.height;
+
+        canvas.width = w;
+        canvas.height = h;
+        canvas.style.width = `${w}px`;
+        canvas.style.height = `${h}px`;
+        canvasWrap.style.width = `${w}px`;
+        canvasWrap.style.height = `${h}px`;
+        canvasWrap.style.setProperty('--scale-factor', viewport.scale);
+
+        textLayerEl.innerHTML = '';
+        linkLayer.innerHTML = '';
+
+        // 1) Canvas
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        // 2) Text layer
+        try {
+          const textContent = await page.getTextContent();
+          await pdfjsLib.renderTextLayer({
+            textContentSource: textContent,
+            textContent,
+            container: textLayerEl,
+            viewport,
+            textDivs: [],
+          }).promise;
+        } catch (err) {
+          console.warn('Text layer failed:', err);
+        }
+
+        // 3) Annotation-based hotspots
+        try {
+          const annotations = await page.getAnnotations({ intent: 'display' });
+          if (DEBUG) {
+            console.log(`── Page ${num}: ${annotations.length} annotation(s) ──`);
+            annotations.forEach((a, i) => {
+              if (a.subtype === 'Link') {
+                console.log(`[${i}] Link | url:`, a.url, '| unsafeUrl:', a.unsafeUrl,
+                  '| dest:', a.dest, '| rect:', a.rect);
+              }
+            });
+          }
+
+          for (const annot of annotations) {
+            if (annot.subtype !== 'Link' || !annot.rect) continue;
+
+            const [x1, y1, x2, y2] = viewport.convertToViewportRectangle(annot.rect);
+            const left = Math.min(x1, x2);
+            const top = Math.min(y1, y2);
+            const width = Math.abs(x2 - x1);
+            const height = Math.abs(y2 - y1);
+
+            const hit = document.createElement('a');
+            hit.style.left = `${left}px`;
+            hit.style.top = `${top}px`;
+            hit.style.width = `${width}px`;
+            hit.style.height = `${height}px`;
+
+            const kind = classifyAnnotation(annot);
+
+            if (kind.type === 'email') {
+              hit.href = '#';
+              hit.title = `Click to copy ${kind.value}`;
+              hit.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const ok = await copyToClipboard(kind.value);
+                if (ok) showToast('Copied ', kind.value, 'success');
+                else showToast('Copy blocked — ', kind.value, 'warn');
+              });
+            } else if (kind.type === 'url') {
+              hit.href = kind.value;
+              hit.target = '_blank';
+              hit.rel = 'noopener noreferrer';
+              hit.title = kind.value;
+            } else if (kind.type === 'tel') {
+              hit.href = kind.raw;
+              hit.title = `Call ${kind.value}`;
+            } else if (kind.type === 'dest') {
+              hit.href = '#';
+              hit.title = 'Internal link';
+              hit.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const targetPage = await resolveDestToPage(annot.dest);
+                if (targetPage && targetPage !== pageNum) {
+                  pageNum = targetPage;
+                  queueRenderPage(pageNum);
+                  container.scrollTop = 0;
+                }
+              });
+            } else continue;
+
+            linkLayer.appendChild(hit);
+          }
+        } catch (err) {
+          console.warn('Link layer failed:', err);
+        }
+
+        // 4) ★ Synthetic email hotspots from visible text ★
+        // Must run AFTER text layer AND annotation hotspots,
+        // so synthetic ones layer on top of any overlapping annotation.
+        try {
+          addSyntheticEmailHotspots();
+        } catch (err) {
+          console.warn('Synthetic hotspots failed:', err);
+        }
+
+        pageRendering = false;
+        if (pageNumPending !== null) {
+          renderPage(pageNumPending);
+          pageNumPending = null;
+        }
+        pageInfo.textContent = `${num} / ${pdfDoc.numPages}`;
+      }
+
+      async function resolveDestToPage(dest) {
+        if (typeof dest === 'string') {
+          const resolved = await pdfDoc.getDestination(dest);
+          if (!resolved) return null;
+          const idx = await pdfDoc.getPageIndex(resolved[0]);
+          return idx + 1;
+        }
+        const idx = await pdfDoc.getPageIndex(dest[0]);
+        return idx + 1;
+      }
+
+      function queueRenderPage(num) {
+        if (pageRendering) pageNumPending = num;
+        else renderPage(num);
+      }
+
+      document.getElementById('prev-page').addEventListener('click', () => {
+        if (pageNum <= 1) return;
+        pageNum--; queueRenderPage(pageNum);
+      });
+      document.getElementById('next-page').addEventListener('click', () => {
+        if (pageNum >= pdfDoc.numPages) return;
+        pageNum++; queueRenderPage(pageNum);
+      });
+      document.getElementById('zoom-in').addEventListener('click', () => {
+        scale = Math.min(scale + 0.25, 4); queueRenderPage(pageNum);
+      });
+      document.getElementById('zoom-out').addEventListener('click', () => {
+        scale = Math.max(scale - 0.25, 0.5); queueRenderPage(pageNum);
+      });
+
+      downloadBtn.addEventListener('click', async () => {
+        const originalHTML = downloadBtn.innerHTML;
+        downloadBtn.disabled = true;
+        downloadBtn.innerHTML = 'Downloading…';
+        try {
+          const res = await fetch(PDF_URL);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'amr-cv.pdf';
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (err) {
+          console.error('Download failed:', err);
+          window.open(PDF_URL, '_blank', 'noopener');
+        } finally {
+          downloadBtn.disabled = false;
+          downloadBtn.innerHTML = originalHTML;
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
